@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This script create ranes.py file for the allisbns project.
+"""This script creates the ranges.py file for the allisbns project.
 
 How to use this script?
 
