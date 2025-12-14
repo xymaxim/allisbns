@@ -21,6 +21,23 @@ dependencies = [
     "zstandard>=0.25.0",
 ]
 
+[project.optional-dependencies]
+docs = [
+    "sphinx>=9.0.4",
+    "sphinx-mdinclude>=0.6.2",
+]
+examples = [
+    "allisbns[plotting]",
+    "jupyter>=1.1.1",
+    "tqdm>=4.67.1",
+]
+plotting = [
+    "matplotlib>=3.10.7",
+]
+test = [
+    "pytest>=9.0.1",
+]
+
 [project.urls]
 Documentation = "https://allisbns.readthedocs.io/en/stable"
 Changelog = "https://github.com/xymaxim/allisbns/blob/main/CHANGELOG.md"
@@ -34,20 +51,7 @@ build-backend = "uv_build"
 dev = [
     "defusedxml>=0.7.1",
     "mypy>=1.19.0",
-    "pytest>=9.0.1",
     "ruff>=0.14.6",
-]
-docs = [
-    "sphinx>=9.0.4",
-    "sphinx-mdinclude>=0.6.2",
-]
-examples = [
-    { include-group = "plotting" },
-    "jupyter>=1.1.1",
-    "tqdm>=4.67.1",
-]
-plotting = [
-    "matplotlib>=3.10.7",
 ]
 
 [tool.uv.build-backend]
