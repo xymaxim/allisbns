@@ -55,7 +55,7 @@ dev = [
 ]
 
 [tool.uv.build-backend]
-source-exclude = ["examples/"]
+source-exclude = ["*\\~", "\\#*\\#"]
 
 [tool.ruff]
 line-length = 88
