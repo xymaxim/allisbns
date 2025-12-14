@@ -1,0 +1,96 @@
+[project]
+name = "allisbns"
+version = "0.1.0"
+description = "Works with Anna's Archive's ISBN code files"
+keywords = ["annas-archive"]
+authors = [
+    { name = "Maxim Stolyarchuk", email = "maxim.stolyarchuk@gmail.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "bencode-py>=4.0.0",
+    "numpy>=2.3.5",
+    "zstandard>=0.25.0",
+]
+
+[project.urls]
+Documentation = "https://allisbns.readthedocs.io/en/stable"
+Changelog = "https://github.com/xymaxim/allisbns/blob/main/CHANGELOG.md"
+GitHub = "https://github.com/xymaxim/allisbns"
+
+[build-system]
+requires = ["uv_build>=0.9.5,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "defusedxml>=0.7.1",
+    "mypy>=1.19.0",
+    "pytest>=9.0.1",
+    "ruff>=0.14.6",
+]
+docs = [
+    "sphinx>=9.0.4",
+    "sphinx-mdinclude>=0.6.2",
+]
+examples = [
+    { include-group = "plotting" },
+    "jupyter>=1.1.1",
+    "tqdm>=4.67.1",
+]
+plotting = [
+    "matplotlib>=3.10.7",
+]
+
+[tool.uv.build-backend]
+source-exclude = ["examples/"]
+
+[tool.ruff]
+line-length = 88
+exclude = [
+    ".ipynb_checkpoints",
+]
+
+[tool.ruff.lint]
+pydocstyle.convention = "google"
+select = ["ALL"]
+ignore = [
+    "ANN",      # flake8-annotations
+    "COM812",   # missing-trailing-comma
+    "D102",     # undocumented-public-method
+    "D103",     # undocumented-public-function
+    "D104",     # undocumented-public-package
+    "D105",     # undocumented-magic-method
+    "D401",     # non-imperative-mood
+    "E731",     # lambda-assignment
+    "EM101",    # raw-string-in-exception
+    "EM102",    # f-string-in-exception
+    "FBT",      # flake8-boolean-trap
+    "PLR2004",  # magic-value-comparison
+    "PTH123",   # builtin-open
+    "SIM108",   # if-else-block-instead-of-if-exp
+    "SLF001",   # private-member-access
+    "TRY003",   # raise-vanilla-args
+]
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*.py" = [
+    "ANN",
+    "D",
+    "ERA001",
+    "PT",
+    "S101"
+]
+"examples/*" = ["D", "INP"]
+"examples/*.ipynb" = ["T201"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+lines-between-types = 1
