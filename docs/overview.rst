@@ -110,7 +110,7 @@ string types.
 To simplify things, the methods of :class:`~allisbns.dataset.CodeDataset` only
 accepts ISBNs represented as *ISBN-12* values (without the check digit) of
 integer types. We omit the range validation there, but you can use
-:func:`~allisbns.isbn.ensure_isbn12` the make sure that your values are valid if
+:func:`~allisbns.isbn.ensure_isbn12` to make sure that your values are valid if
 needed.
 
 To work with strings, we have two classes, :class:`~allisbns.isbn.CanonicalISBN`
