@@ -67,7 +67,7 @@ def rearrange_to_blocks(
 
     The arrangement is inspired by the "bookshelf" space-filling curve [1], but
     we treat it in a simpler way. So, it is basically an equivalent to the
-    line-filling curve as in :meth:`rearranges_to_rows` with additional division
+    line-filling curve as in :func:`rearranges_to_rows` with additional division
     into vertical blocks of the fixed size stacked horizontally afterwards.
 
     Arguments:

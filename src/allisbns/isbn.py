@@ -310,7 +310,7 @@ def validate_isbn(
 
     The validation includes checks for: (1) an undefined registration group, (2) an
     undefined registrant, and (3) an incorrect check digit. To check if a string is an
-    ISBN or not, see :meth:`match_isbn` instead.
+    ISBN or not, see :func:`match_isbn` instead.
 
     Arguments:
         value: A canonical ISBN to validate.
@@ -321,11 +321,11 @@ def validate_isbn(
         and a list of reasons for failed checks.
 
     See Also:
-        :meth:`match_isbn`
+        :func:`match_isbn`
 
     Examples:
         If you need to check a list of unsure ISBNs for validity, you can
-        combine this function with :meth:`match_isbn`::
+        combine this function with :func:`match_isbn`::
 
           def check_isbn_for_errors(x: MaybeISBN) -> list[InvalidISBNReason]:
               if not match_isbn(x):

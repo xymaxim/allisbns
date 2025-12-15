@@ -333,7 +333,7 @@ class RowBinnedPlotter(BinnedPlotter):
         """Creates a plotter for bins with a fixed width of rows.
 
         Internally, bins are rearranged into an image with the
-        :meth:`~allisbns.rearrange.rearrange_to_rows` method.
+        :func:`~allisbns.rearrange.rearrange_to_rows` method.
 
         Arguments:
             ax: An axis into which to plot.
@@ -425,7 +425,7 @@ class BlockBinnedPlotter(BinnedPlotter):
         """Creates a plotter for bins stacked as vertical blocks.
 
         Internally, bins are rearranged into an image with the
-        :meth:`~allisbns.rearrange.rearrange_to_blocks` method.
+        :func:`~allisbns.rearrange.rearrange_to_blocks` method.
 
         Arguments:
             ax: An axis into which to plot.
