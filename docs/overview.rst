@@ -82,9 +82,9 @@ See more examples in :func:`~allisbns.dataset.iterate_datasets`'s docstring or
 Limit output
 ============
 
-By design, datasets are considered immutable after creation. So, if you need to
-limit the output (for example, to get all filled ISBNs with prefix '979'), then
-you will need to crop a dataset before:
+By design, datasets are considered immutable after creation. Moreover, there is
+no way to limit the output of some methods. If you need, for example, to get all
+filled ISBNs with prefix '979', then you will need to crop a dataset before:
 
 .. code-block:: python
 
