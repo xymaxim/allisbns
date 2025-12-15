@@ -92,13 +92,12 @@ you will need to crop a dataset before:
    md5.crop(*get_prefix_bounds("979")).get_filled_isbns()
 
 If you need to modify codes for some reason, you can copy codes and create a new
-dataset after editing. For example, here is an example of how to inverse a
-dataset:
+dataset after editing. For example, here is an equivalent of the
+:meth:`~allisbns.dataset.CodeDataset.invert` method to inverse a dataset:
 
 .. code-block:: python
 
-   >>> codes = md5.codes.copy()
-   >>> CodeDataset(np.concatenate([0], codes), offset=md5.offset)
+   >>> CodeDataset(np.concatenate([[0], md5.codes]), offset=md5.offset)
    CodeDataset(array([     0,      6,      1, ...,  91739,      1],
       shape=(14737377,), dtype=int32), bounds=(978000000000, 979999468900))
 

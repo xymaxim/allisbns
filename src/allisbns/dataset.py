@@ -259,6 +259,13 @@ class CodeDataset:
 
         return self.__class__(cropped, offset=start)
 
+    def invert(self) -> Self:
+        """Inverts the dataset by making streak segments gap."""
+        return self.__class__(
+            codes=np.concatenate([[0], self.codes]),
+            offset=self.offset,
+        )
+
     def query_isbn(self, isbn: ISBN12) -> QueryResult:
         """Queries if the ISBN is filled in the dataset and its position.
 
@@ -305,6 +312,11 @@ class CodeDataset:
 
         Returns:
             An array of filled ISBNs.
+
+        Examples:
+            To get unfilled ISBNs, invert the dataset first::
+
+              dataset.invert().get_filled_isbns()
         """
         return np.flatnonzero(self.unpack_codes()) + self.offset
 
@@ -412,6 +424,9 @@ class CodeDataset:
                 raise ValueError("slice step is not supported")
             return self.crop(key.start, key.stop)
         raise ValueError("Object supports only slicing")
+
+    def __invert__(self) -> Self:
+        return self.invert()
 
     def __repr__(self) -> str:
         return (

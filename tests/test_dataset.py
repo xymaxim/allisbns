@@ -282,3 +282,27 @@ def test_count_filled_isbns(codes, expected):
 )
 def test_is_subset(subset, superset, expected):
     assert expected is subset.is_subset(superset)
+
+
+@pytest.mark.parametrize(
+    "codes, offset, expected",
+    [
+        ([5, 1, 2], 0, [0, 5, 1, 2]),
+        ([5, 1, 2], 1, [0, 5, 1, 2]),
+    ],
+)
+def test_invert(codes, offset, expected):
+    assert (
+        CodeDataset(expected, offset=offset)
+        == CodeDataset(codes, offset=offset).invert()
+    )
+
+
+@pytest.mark.parametrize(
+    "codes, expected",
+    [
+        ([5, 1, 2], [0, 5, 1, 2]),
+    ],
+)
+def test_invert_dunder(codes, expected):
+    assert CodeDataset(expected) == ~CodeDataset(codes)
