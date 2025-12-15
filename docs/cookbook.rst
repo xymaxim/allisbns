@@ -8,8 +8,8 @@ Cookbook
 
 .. _cookbook-iterate-datasets:
 
-Iterate over datasets
-*********************
+Iterate and crop datasets
+*************************
 
 Let's first load the bencoded data from the compressed file:
 
@@ -58,8 +58,8 @@ let's iterate over the '978' region of all datasets:
    for cropped_dataset in iterator_with_cropping:
        ...
 
-Merge all datasets
-******************
+Merge and save datasets
+***********************
 
 Create the iterator as above and union all datasets together:
 
