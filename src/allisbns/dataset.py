@@ -131,17 +131,15 @@ class CodeDataset:
         )
 
     def _fill_to_isbn(self, isbn: ISBN12) -> None:
-        if isbn < self.offset:
-            raise ValueError("isbn is less than offset")
-
-        code_sum = np.sum(self.codes)
-        if isbn < code_sum:
-            raise ValueError("isbn is less than the dataset right bound")
-        if isbn == code_sum:
+        right_bound = self.offset + np.sum(self.codes) - 1
+        if isbn < right_bound:
+            message = f"fill ISBN ({isbn}) must be beyond right bound ({right_bound})"
+            raise ValueError(message)
+        if isbn == right_bound:
             return
 
         # Check if codes end with a gap segment
-        deficiency = int(isbn - self.offset - code_sum + 1)
+        deficiency = isbn - right_bound
         if len(self.codes) % 2 == 0:
             self.codes[-1] += deficiency
         else:

@@ -36,9 +36,9 @@ def codes_from_gap():
     "codes,offset,last,expected",
     [
         ([5, 1, 2], 978_000_000_000, None, [5, 1, 2]),
-        ([5, 1, 2], 978_000_000_000, 979_999_999_999, [5, 1, 2, 1_999_999_992]),
-        ([5, 1, 2, 3], 978_000_000_000, 979_999_999_999, [5, 1, 2, 1_999_999_992]),
-        ([5, 1, 2, 3], 979_000_000_000, 979_999_999_999, [5, 1, 2, 999_999_992]),
+        ([5, 1, 2], 978_000_000_000, 978_000_000_007, [5, 1, 2]),
+        ([5, 1, 2], 978_000_000_000, 978_000_000_008, [5, 1, 2, 1]),
+        ([5, 1, 2, 3], 978_000_000_000, 978_000_000_011, [5, 1, 2, 4]),
     ],
 )
 def test_fill_to_isbn(codes, offset, last, expected):
@@ -46,8 +46,11 @@ def test_fill_to_isbn(codes, offset, last, expected):
 
 
 def test_fill_to_wrong_total():
-    with pytest.raises(ValueError):
-        CodeDataset([5, 1, 2], fill_to_isbn=1)
+    with pytest.raises(ValueError) as exc_info:
+        CodeDataset([5, 1, 2], 978_000_000_000, fill_to_isbn=978_000_000_006)
+    assert str(exc_info.value) == (
+        "fill ISBN (978000000006) must be beyond right bound (978000000007)"
+    )
 
 
 @pytest.mark.parametrize(
