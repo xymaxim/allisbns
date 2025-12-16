@@ -1,5 +1,7 @@
 # allisbns
 
+![PyPI - Version](https://img.shields.io/pypi/v/allisbns)
+
 allisbns is a Python package to work with the packed ISBN codes from [Anna's
 Archive](https://annas-archive.org/). It helps you to examine, manipulate, and
 plot such data that represent the largest fully open list of all known ISBNs.
