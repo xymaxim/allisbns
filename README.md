@@ -34,7 +34,7 @@ available data: check many ISBNs at once, analyze selected regions, compare
 different dumps, plot custom images, etc.
 
 
-![Binned image of all ISBNs](../images/allisbns-cover-readme.jpg)
+![Binned image of all ISBNs](https://media.githubusercontent.com/media/xymaxim/allisbns/refs/heads/main/images/allisbns-cover-readme.jpg)
 
 *Binned image*
 ([hi-res
