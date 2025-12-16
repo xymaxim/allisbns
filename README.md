@@ -1,6 +1,7 @@
 # allisbns
 
 ![PyPI - Version](https://img.shields.io/pypi/v/allisbns)
+[![Tests](https://github.com/xymaxim/allisbns/actions/workflows/ci.yml/badge.svg)](https://github.com/xymaxim/allisbns/actions/workflows/ci.yml)
 
 allisbns is a Python package to work with the packed ISBN codes from [Anna's
 Archive](https://annas-archive.org/). It helps you to examine, manipulate, and
