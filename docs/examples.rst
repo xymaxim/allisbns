@@ -7,3 +7,4 @@ Examples
 * `Merge datasets <https://github.com/xymaxim/allisbns/blob/main/examples/merge-datasets.ipynb>`__ --- how to merge datasets
 * `Plot all ISBNs <https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-isbns.ipynb>`__ --- plotting all merged datasets
 * `Compare dumps <https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb>`__ --- comparison of two ISBN code dumps
+* `Plot cover image <https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb>`__ --- how is the cover image plotted
