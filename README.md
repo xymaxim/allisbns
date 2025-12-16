@@ -18,7 +18,7 @@ the [Chinese
 collections](https://annas-archive.org/blog/finished-chinese-release.html), and
 many others). Such an extensive collection presumably
 [represents](https://annas-archive.org/blog/all-isbns.html) the largest openly
-available metadata about all known ISBNs ever published.
+available metadata about all known ISBNs ever published (see the figure below).
 
 The derived metadata, periodically published by Anna and the team, includes the
 *packed ISBN codes*, a very [compact
@@ -32,6 +32,17 @@ interactive [viewer](https://annas-archive.org/isbn-visualization) exists to
 explore all ISBNs. However, sometimes you need more imperative control over the
 available data: check many ISBNs at once, analyze selected regions, compare
 different dumps, plot custom images, etc.
+
+
+![Binned image of all ISBNs](../images/allisbns-cover-readme.jpg)
+
+*Binned image*
+([hi-res
+version](https://raw.githubusercontent.com/xymaxim/allisbns/refs/heads/main/images/allisbns-cover-high.jpg))
+*of all known ISBNs from Anna's Archive. The defined ISBN registration groups
+are underlaid in black. See*
+[here](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb)
+*how it is plotted*.
 
 ## Installation
 
