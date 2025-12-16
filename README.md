@@ -37,10 +37,9 @@ different dumps, plot custom images, etc.
 ![Binned image of all ISBNs](https://media.githubusercontent.com/media/xymaxim/allisbns/refs/heads/main/images/allisbns-cover-readme.jpg)
 
 *Binned image*
-([hi-res
-version](https://media.githubusercontent.com/media/xymaxim/allisbns/refs/heads/main/images/allisbns-cover-high.jpg))
-*of all known ISBNs from Anna's Archive. The defined ISBN registration groups
-are underlaid in black. See*
+([hi-res version](https://media.githubusercontent.com/media/xymaxim/allisbns/refs/heads/main/images/allisbns-cover-high.jpg))
+*of all known ISBNs (source: Anna's Archive). The defined ISBN registration
+groups are underlaid in black. See*
 [here](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb)
 *how it is plotted*.
 
