@@ -13,3 +13,7 @@ RangeMessage.xml:
 ranges.py: RangeMessage.xml
 	uv run python scripts/create-ranges-file.py RangeMessage.xml \
 	  > src/allisbns/ranges.py
+
+allisbns-cover.jpg:
+	uv run jupyter nbconvert --to notebook --execute --inplace \
+	  examples/plot-cover-image.ipynb
