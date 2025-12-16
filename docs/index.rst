@@ -7,3 +7,4 @@
    api/index
    examples
    cookbook
+   changelog

@@ -8,6 +8,7 @@ plot such data that represent the largest fully open list of all known ISBNs.
 
 [Source](https://github.com/xymaxim/allisbns)
 [Documentation](https://allisbns.readthedocs.io/en/stable/)
+[Changelog](https://allisbns.readthedocs.io/en/latest/changelog.html)
 
 ## Introduction
 
