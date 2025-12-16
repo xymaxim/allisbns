@@ -272,9 +272,12 @@ class CodeDataset:
 
         Returns:
             A query result.
+
+        Raises:
+            `ValueError`: If the ISBN is outside of the dataset bounds.
         """
         if not (self.bounds[0] <= isbn <= self.bounds[1]):
-            raise ValueError("input ISBN is outside of the data range")
+            raise ValueError(f"{isbn} is outside of bounds {self.bounds}")
 
         segment_index = int(np.searchsorted(self._isbn_cumsums, isbn, side="right"))
         is_streak = bool(segment_index % 2 == 0)
