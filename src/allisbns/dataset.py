@@ -293,17 +293,14 @@ class CodeDataset:
         Returns:
             An array of boolean values.
         """
-        isbns_array = np.array(isbns)
-        # Check if all input ISBNs are inside data range
-        outside_mask = (isbns_array < self.bounds[0]) | (isbns_array > self.bounds[1])
-        if np.any(outside_mask):
-            raise ValueError(
-                f"some ISBNs are outside of data range: {isbns_array[outside_mask]}"
-            )
+        isbns = np.asarray(isbns)
+        inside_mask = (self.bounds[0] <= isbns) & (isbns <= self.bounds[1])
 
-        segment_indices = np.searchsorted(self._isbn_cumsums, isbns_array, side="right")
+        # Outside ISBNs are false positives here
+        segment_indices = np.searchsorted(self._isbn_cumsums, isbns, side="right")
+        filled_mask = segment_indices % 2 == 0
 
-        return segment_indices % 2 == 0
+        return filled_mask & inside_mask
 
     def get_filled_isbns(self) -> npt.NDArray:
         """Gets filled ISBNs in the dataset.

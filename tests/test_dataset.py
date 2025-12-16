@@ -117,6 +117,10 @@ def test_query_isbn_offsetted(codes_from_streak, isbn, expected):
             (978_000_000_003, 978_000_000_004, 978_000_000_005, 978_000_000_006),
             (True, True, False, True),
         ),
+        (
+            (978_000_000_000 - 1, 978_999_999_999),
+            (False, False),
+        ),
     ],
 )
 def test_check_isbns(codes_from_streak, isbns, expected):
