@@ -16,7 +16,7 @@
 * [Plot cover image](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb>) --- how is the cover image plotted
 * [Find unique ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/find-unique-isbns.ipynb) --- finding ISBNs unique to the dataset
 
-## How to run it?
+## How to run notebooks?
 
 1. Download `aa_isbn13_codes_*.benc.zst` from the [torrent](https://allisbns.readthedocs.io/en/stable/#download-data) to `examples`
 2. Set `LATEST_DUMP_FILENAME` in `examples/common.py` to the downloaded file's
