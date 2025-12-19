@@ -397,8 +397,8 @@ def extract_group_prefix(isbn: CanonicalISBN) -> str:
         A found full ISBN group prefix, e.g. '978-1'.
 
     Raises:
-        :class:`~allisbns.errors.InvalidISBNError`: If the ISBN does not
-        contain valid group prefix.
+        :class:`~allisbns.errors.InvalidISBNError`: If the ISBN does not contain
+            valid group prefix.
 
     Note:
         Group ranges were periodically updated from the RangeMessage.xml file
