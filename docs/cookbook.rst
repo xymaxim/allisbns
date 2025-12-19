@@ -54,8 +54,8 @@ example, let's iterate over the '978' region of all datasets:
    iterator = iterate_datasets(input_data, fill_to_isbn=end_isbn)
 
    # Use the generator expression to lazy reframe datasets
-   iterator_with_framing = (x.reframe(start_isbn, end_isbn) for x in iterator)
-   for reframed_dataset in iterator_with_framing:
+   reframing = (x.reframe(start_isbn, end_isbn) for x in iterator)
+   for reframed_dataset in reframing:
        ...
 
 Merge and save datasets
