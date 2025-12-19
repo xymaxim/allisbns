@@ -40,14 +40,14 @@ The iterable datasets can be narrowed only to the selected ones:
    ):
        ...
 
-Also, the iterable datasets can be lazy cropped to some boundaries. For example,
+Also, the iterable datasets can be lazy cropped to some new bounds. For example,
 let's iterate over the '978' region of all datasets:
 
 .. code-block:: python
 
    from allisbns.isbn import get_prefix_bounds
 
-   # Get the corresponding boundaries
+   # Get the corresponding bounds
    start_isbn, end_isbn = *get_prefix_bounds("978")
 
    # Create the iterator, fill all datasets to the end ISBN
@@ -68,7 +68,7 @@ Create the iterator as above and union all datasets together:
    from allisbns.isbn import LAST_ISBN
    from allisbns.merge import union
 
-   # The boundaries must be the same
+   # The bounds must be the same
    iterator = iterate_datasets(input_data, fill_to_isbn=LAST_ISBN)
 
    all_merged = merge.union(iterator)

@@ -281,7 +281,7 @@ Define extent without plotting
 What if you want to scatter plot ISBNs using a plotter to keep all axis
 decorations and all else? There is the
 :meth:`~allisbns.plotting.BinnedPlotter.define_extent` method to define the
-extent based on the boundary ISBNs without plotting bins or an image:
+extent based on the ISBN bounds without plotting bins or an image:
 
 .. code-block:: python
 
