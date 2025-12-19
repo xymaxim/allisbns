@@ -25,7 +25,7 @@ many others). Such an extensive collection presumably
 available metadata about all known ISBNs ever published (see the figure below).
 
 The derived metadata, periodically published by Anna and the team, includes the
-*packed ISBN codes*, a very [compact
+packed ISBN codes, a very [compact
 representation](https://annas-archive.org/blog/all-isbns.html#:~:text=a%20compact%20data%20format)
 of all ISBNs with distinction of original data sources: it can tell you what
 ISBNs are available in a dataset.
@@ -65,11 +65,13 @@ The package works with datasets provided as bencoded files named as
 `aa_isbn13_codes_*.benc.zst`. Such files are located in the `codes_benc`
 directory within the
 [aa_derived_mirror_metadata](https://annas-archive.org/torrents/aa_derived_mirror_metadata)
-torrents.
+torrents. One file contains ISBN codes for all datasets (collections). See
+[here](https://allisbns.readthedocs.io/en/stable/overview.html#codes) for more
+info about codes.
 
 ### Work with datasets
 
-Creates a dataset from the downloaded file with ISBN codes:
+Create a dataset from the downloaded file with ISBN codes:
 
 ```python
     >>> from allisbns.dataset import CodeDataset
