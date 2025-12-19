@@ -4,7 +4,7 @@ API
 **Module-level APIs**
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     allisbns.dataset
     allisbns.errors
