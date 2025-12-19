@@ -9,16 +9,36 @@ Overview
 Working with datasets
 *********************
 
+Source data
+===========
+
+Anna and the team periodically, as part of the derived metadata, publishes files
+with ISBN codes named as ``aa_isbn13_codes_*.benc.zst``. They can be downloaded
+via the ``aa_derived_mirror_metadata`` torrent from `this page
+<https://annas-archive.org/torrents/aa_derived_mirror_metadata>`__.
+
 Codes
 =====
 
 The *packed ISBN codes* are a set of integers that represent the length of the
-alternating streak and gap segments, for example, ``3, 2, 1, ...``. It is
-similar to the `run-length encoding
+alternating *streak* (present ISBNs) and *gap* (missing ISBNs) segments, for
+example::
+
+  3, 2, 1, ...
+
+The codes are mapped to 2 million ISBNs covering both 978 and 979 prefixes. It
+is similar to the `run-length encoding
 <https://en.wikipedia.org/wiki/Run-length_encoding>`__ and efficiently describes
-information about ISBN availability.  See `here
+information about ISBN availability for a selected dataset. The above codes can
+be expand to the following boolean mask::
+
+  True, True, True, False, False, True, ...
+
+It is supposed for all published datasets that the offset
+is 9780000000002. Also, codes end with a streak segment and the last gap segment
+is omitted. See `here
 <https://software.annas-archive.li/AnnaArchivist/annas-archive/-/blob/9c18fc80341376914da2fe0770b4ed13347143f0/allthethings/cli/views.py#L2007-2019>`__
-on how they are generated and for the description of the binary format used to
+on how codes are generated and for the description of the binary format used to
 store them.
 
 In our package we use several terms that relate to ISBN availability. We can
@@ -27,11 +47,6 @@ distinguish between *packed* and *unpacked* codes:
 codes and :type:`~allisbns.dataset.UnpackedCodes` to the decoded one as boolean
 values. To distinguish between the individual ISBNs from streak and gap segments,
 we call them *filled* and *unfilled* ISBNs, respectively.
-
-The files with codes named as ``aa_isbn13_codes_*.benc.zst`` and occasionally
-published by Anna and the team can be downloaded via the
-``aa_derived_mirror_metadata`` torrent from `this page
-<https://annas-archive.org/torrents/aa_derived_mirror_metadata>`__.
 
 Read datasets
 =============
