@@ -118,7 +118,7 @@ Crop the dataset to some ISBN region:
 ```python
     >>> from allisbns.isbn import get_prefix_bounds
     >>> start_isbn, end_isbn = get_prefix_bounds("978")
-    >>> md5.crop(start_isbn, end_isbn)
+    >>> md5.reframe(start_isbn, end_isbn)
     CodeDataset(array([6, 1, 9, ..., 1, 2, 2],
        shape=(14503001,), dtype=int32), bounds=(978000000000, 978999999999))
 ```
