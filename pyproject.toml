@@ -1,6 +1,6 @@
 [project]
 name = "allisbns"
-version = "0.1.1"
+version = "0.1.2"
 description = "Works with Anna's Archive's ISBN code files"
 keywords = ["annas-archive"]
 authors = [
