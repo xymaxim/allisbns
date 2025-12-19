@@ -36,6 +36,9 @@ published by Anna and the team can be downloaded via the
 Read datasets
 =============
 
+Several ways
+------------
+
 There are several ways to read datasets from the bencoded compressed files.
 
 The **first** way is quick and short. It uncompress the file and extract a single
@@ -79,27 +82,55 @@ the following:
 See more examples in :func:`~allisbns.dataset.iterate_datasets`'s docstring or
 :ref:`this <cookbook-iterate-datasets>` cookbook recipe.
 
-Limit output
-============
+Extend codes
+------------
 
-By design, datasets are considered immutable after creation. Moreover, there is
-no way to limit the output of some methods. If you need, for example, to get all
-filled ISBNs with prefix '979', then you will need to reframe a dataset before:
+By default, datasets are read as is and have different sizes in ISBNs. However,
+sometimes it is required to bring datasets to the same size: for example, when
+you merge or plot them. To extend a dataset to some ISBN value with a gap
+segment, we can use the ``fill_to_isbn`` argument:
+
+.. code-block:: python
+
+    >>> from allisbns.isbn import LAST_ISBN
+    >>>
+    >>> CodeDataset.from_file(
+    ...     source="aa_isbn13_codes_20251118T170842Z.benc.zst",
+    ...     collection="md5",
+    ...     fill_to_isbn=LAST_ISBN,
+    ... )
+    CodeDataset(array([     6,      1,      9, ...,  91739,      1, 531099],
+      shape=(14737376,)), bounds=(978000000000, 979999999999))
+
+Reframe datasets
+================
+
+After reading, it is possible to select a part of a dataset by reframing it. The
+reframing includes both cropping existing segments and extending codes with
+gap segments on both sides.
+
+The use cases could include limiting the output of some methods. For example, if
+you need to get all filled ISBNs with the '979' prefix, then you will need to
+reframe a dataset in prior with :meth:`~allisbns.dataset.CodeDataset.reframe`:
 
 .. code-block:: python
 
    from allisbns.isbn import get_prefix_bounds
    md5.reframe(*get_prefix_bounds("979")).get_filled_isbns()
 
-If you need to modify codes for some reason, you can copy codes and create a new
-dataset after editing. For example, here is an equivalent of the
+Immutable datasets
+==================
+
+By design, datasets are considered immutable after creation. If you need to
+modify codes for some reason, you can copy codes and create a new dataset after
+editing. For example, here is an equivalent of the
 :meth:`~allisbns.dataset.CodeDataset.invert` method to inverse a dataset:
 
 .. code-block:: python
 
    >>> CodeDataset(np.concatenate([[0], md5.codes]), offset=md5.offset)
    CodeDataset(array([     0,      6,      1, ...,  91739,      1],
-      shape=(14737377,), dtype=int32), bounds=(978000000000, 979999468900))
+     shape=(14737377,), dtype=int32), bounds=(978000000000, 979999468900))
 
 Working with ISBNs
 ******************
