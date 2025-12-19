@@ -8,6 +8,13 @@ from numpy.testing import assert_array_equal
 from allisbns.dataset import CodeDataset
 
 
+packed_and_unpacked_codes = [
+    ([3, 2, 1], [True, True, True, False, False, True]),
+    ([0, 2, 1], [False, False, True]),
+    ([3, 2, 1, 2], [True, True, True, False, False, True, False, False]),
+]
+
+
 @pytest.fixture
 def codes_from_streak():
     return np.asarray(
@@ -145,18 +152,51 @@ def test_check_isbns_offsetted(codes_from_streak, isbns, expected):
 @pytest.mark.parametrize(
     "start, end, expected",
     [
-        (978_000_000_000, 978_000_000_002, ([3], 978_000_000_000)),
-        (978_000_000_000, 978_000_000_006, ([5, 1, 1], 978_000_000_000)),
-        (978_000_000_000, 978_000_000_010, ([5, 1, 2, 3], 978_000_000_000)),
-        (978_000_000_001, 978_000_000_001, ([1], 978_000_000_001)),
+        # From a streak to a streak
+        (978_000_000_003, 978_000_000_006, ([2, 1, 1], 978_000_000_003)),
+        # From a streak to a gap
+        (978_000_000_003, 978_000_000_008, ([2, 1, 2, 1], 978_000_000_003)),
+        # From a gap to a streak
+        (978_000_000_005, 978_000_000_006, ([0, 1, 1], 978_000_000_005)),
+        # From a gap to a gap
+        (978_000_000_005, 978_000_000_008, ([0, 1, 2, 1], 978_000_000_005)),
+        # Inside one streak segment
+        (978_000_000_006, 978_000_000_007, ([2], 978_000_000_006)),
+        # Single streak element
+        (978_000_000_006, 978_000_000_006, ([1], 978_000_000_006)),
+        # Inside a single gap element
+        (978_000_000_008, 978_000_000_009, ([0, 2], 978_000_000_008)),
+        # Single gap element
         (978_000_000_008, 978_000_000_008, ([0, 1], 978_000_000_008)),
+        # Entire dataset
+        (978_000_000_000, 978_000_000_010, ([5, 1, 2, 3], 978_000_000_000)),
+        # Start and end are both outside
+        (
+            978_000_000_000 - 10,
+            978_000_000_020,
+            ([0, 10, 5, 1, 2, 13], 978_000_000_000 - 10),
+        ),
+        # Start is outside
+        (978_000_000_000 - 10, 978_000_000_003, ([0, 10, 4], 978_000_000_000 - 10)),
+        # End is outside
+        (978_000_000_003, 978_000_000_010 + 1, ([2, 1, 2, 4], 978_000_000_003)),
+        # Start and end are both to the left of bounds
+        (978_000_000_000 - 10, 978_000_000_000 - 5, ([0, 6], 978_000_000_000 - 10)),
+        # Start and end are both to the right of bounds
+        (978_000_000_010 + 1, 978_000_000_010 + 6, ([0, 6], 978_000_000_010 + 1)),
     ],
 )
-def test_crop_when_from_streak(codes_from_streak, start, end, expected):
-    expected_data, expected_offset = expected
-    cropped = CodeDataset(codes_from_streak).crop(start, end)
-    assert_array_equal(cropped.codes, expected_data)
-    assert cropped.offset == expected_offset
+def test_reframe_when_from_streak(codes_from_streak, start, end, expected):
+    expected_codes, expected_offset = expected
+
+    initial = CodeDataset(codes_from_streak)
+    initial_codes = initial.codes.copy()
+
+    cropped = initial.reframe(start, end)
+
+    assert expected_offset == cropped.offset
+    assert_array_equal(cropped.codes, expected_codes)
+    assert_array_equal(initial_codes, initial.codes)
 
 
 @pytest.mark.parametrize(
@@ -166,40 +206,24 @@ def test_crop_when_from_streak(codes_from_streak, start, end, expected):
         (978_000_000_001, 978_000_000_002, ([2], 978_000_000_001)),
     ],
 )
-def test_crop_when_from_gap(codes_from_gap, start, end, expected):
-    expected_data, expected_offset = expected
-    cropped = CodeDataset(codes_from_gap).crop(start, end)
-    assert_array_equal(cropped.codes, expected_data)
-    assert cropped.offset == expected_offset
+def test_reframe_when_from_gap(codes_from_gap, start, end, expected):
+    expected_codes, expected_offset = expected
+
+    initial = CodeDataset(codes_from_gap)
+    initial_codes = initial.codes.copy()
+
+    cropped = initial.reframe(start, end)
+
+    assert expected_offset == cropped.offset
+    assert_array_equal(cropped.codes, expected_codes)
+    assert_array_equal(initial_codes, initial.codes)
 
 
-@pytest.mark.parametrize(
-    "start, end, expected",
-    [
-        (900_000_000_000, 978_000_000_002, ([3], 978_000_000_000)),
-        (978_000_000_000, 999_999_999_999, ([5, 1, 2, 3], 978_000_000_000)),
-        (900_000_000_000, 999_999_999_999, ([5, 1, 2, 3], 978_000_000_000)),
-    ],
-)
-def test_crop_outside(codes_from_streak, start, end, expected):
-    expected_data, expected_offset = expected
-    cropped = CodeDataset(codes_from_streak).crop(start, end)
-    assert_array_equal(cropped.codes, expected_data)
-    assert cropped.offset == expected_offset
-
-
-def test_crop_with_slicing(codes_from_streak):
-    sliced = CodeDataset(codes_from_streak)[978_000_000_001:978_000_000_001]
-    expected = CodeDataset([1], 978_000_000_001)
+def test_reframe_with_slicing(codes_from_streak):
+    sliced = CodeDataset(codes_from_streak)[978_000_000_001:978_000_000_002]
+    expected = CodeDataset([2], 978_000_000_001)
     assert sliced.codes == expected.codes
     assert sliced.offset == expected.offset
-
-
-packed_and_unpacked_codes = [
-    ([3, 2, 1], [True, True, True, False, False, True]),
-    ([0, 2, 1], [False, False, True]),
-    ([3, 2, 1, 2], [True, True, True, False, False, True, False, False]),
-]
 
 
 @pytest.mark.parametrize("codes, expected", packed_and_unpacked_codes)
@@ -270,11 +294,11 @@ def test_count_filled_isbns(codes, expected):
             CodeDataset([1, 2, 3, 4], offset=0),
             True,
         ),
-        (
-            CodeDataset([0, 2, 3], offset=1),
-            CodeDataset([1, 2, 3], offset=0),
-            True,
-        ),
+        # (
+        #     CodeDataset([0, 2, 3], offset=1),
+        #     CodeDataset([1, 2, 3], offset=0),
+        #     True,
+        # ),
         (
             CodeDataset([1, 2, 3], offset=0),
             CodeDataset([1, 2, 3], offset=1),

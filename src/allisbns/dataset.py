@@ -15,7 +15,7 @@ import numpy.typing as npt
 from bencodepy import bread  # type: ignore[import-untyped]
 from zstandard import ZstdCompressor, ZstdDecompressor
 
-from allisbns.isbn import FIRST_ISBN, ISBN12
+from allisbns.isbn import FIRST_ISBN, ISBN12, ISBNBounds
 
 
 if TYPE_CHECKING:
@@ -112,7 +112,7 @@ class CodeDataset:
     fill_to_isbn: InitVar[ISBN12 | None] = None
 
     #: First and last ISBNs in the dataset.
-    bounds: tuple[ISBN12, ISBN12] = field(init=False)
+    bounds: ISBNBounds = field(init=False)
 
     #: Cumulative sums of ISBNs derived from the codes.
     _isbn_cumsums: npt.NDArray = field(init=False)
@@ -127,25 +127,8 @@ class CodeDataset:
             self, "_isbn_cumsums", int(self.offset) + np.cumsum(self.codes)
         )
         object.__setattr__(
-            self, "bounds", (self.offset, int(self._isbn_cumsums[-1] - 1))
+            self, "bounds", ISBNBounds(self.offset, int(self._isbn_cumsums[-1]) - 1)
         )
-
-    def _fill_to_isbn(self, isbn: ISBN12) -> None:
-        right_bound = self.offset + np.sum(self.codes) - 1
-        if isbn < right_bound:
-            message = f"fill ISBN ({isbn}) must be beyond right bound ({right_bound})"
-            raise ValueError(message)
-        if isbn == right_bound:
-            return
-
-        # Check if codes end with a gap segment
-        deficiency = isbn - right_bound
-        if len(self.codes) % 2 == 0:
-            self.codes[-1] += deficiency
-        else:
-            object.__setattr__(
-                self, "codes", np.concatenate([self.codes, [deficiency]])
-            )
 
     @classmethod
     def from_file(
@@ -208,6 +191,124 @@ class CodeDataset:
         )
         return cls(codes=packed_codes, offset=offset)
 
+    def _fill_to_isbn(self, isbn: ISBN12) -> None:
+        right_bound = self.offset + np.sum(self.codes) - 1
+        if isbn < right_bound:
+            message = f"fill ISBN ({isbn}) must be beyond right bound ({right_bound})"
+            raise ValueError(message)
+        if isbn == right_bound:
+            return
+
+        # Check if codes end with a gap segment
+        deficiency = isbn - right_bound
+        if self._ends_with_gap():
+            self.codes[-1] += deficiency
+        else:
+            object.__setattr__(
+                self, "codes", np.concatenate([self.codes, [deficiency]])
+            )
+
+    def _ends_with_gap(self) -> bool:
+        return len(self.codes) % 2 == 0
+
+    def reframe(self, start_isbn: ISBN12 | None, end_isbn: ISBN12 | None) -> Self:
+        """Reframes the dataset to a new bounds.
+
+        Framing could crop or expand the existing bounds.
+
+        Arguments:
+            start_isbn: An ISBN to crop the dataset from. When `None`, the start
+                bound will be used.
+            end_isbn: An ISBN to crop the dataset until. When `None`, the end
+                bound will be used.
+
+        Returns:
+            A new reframed dataset.
+
+        Examples:
+            Crop at both sides:
+
+              >>> dataset = CodeDataset([3, 2, 1], offset=978_000_000_000)
+              CodeDataset(array([3, 2, 1], dtype=int32), bounds=(978000000000,
+              978000000005))
+              >>> dataset.reframe(978_000_000_001, 978_000_000_004)
+              CodeDataset(array([2, 2], dtype=int32), bounds=(978000000001,
+              978000000004))
+
+            Reframe with the default start bound:
+
+              >>> dataset.reframe(None, 978_000_000_100)
+              CodeDataset(array([ 3, 2, 1, 95], dtype=int32),
+              bounds=(978000000000, 978000000100))
+
+            Reframe to both start and end outside bounds:
+
+              >>> dataset.reframe(979_000_000_000, 979_999_999_999)
+              CodeDataset(array([ 0, 1000000000], dtype=int32),
+              bounds=(979000000000, 979999999999))
+
+        See Also:
+            :meth:`__getitem__`: Reframe a dataset using slicing.
+        """
+        new_start_isbn = start_isbn or self.bounds.start
+        new_end_isbn = end_isbn or self.bounds.end
+
+        if new_start_isbn > new_end_isbn:
+            raise ValueError(
+                f"start is ahead of end: {new_start_isbn} > {new_end_isbn}"
+            )
+
+        # Check if start and end are outside bounds on one side
+        new_total_length = new_end_isbn - new_start_isbn + 1
+        if new_start_isbn >= self.bounds.end or new_end_isbn <= self.bounds.start:
+            return self.__class__([0, new_total_length], offset=new_start_isbn)
+
+        result_parts = []
+        cropping_codes = self.codes.copy()
+
+        index_shift = 0
+
+        # Handle start
+        if new_start_isbn < self.offset:
+            gap_length = self.offset - new_start_isbn
+            if self.codes[0] == 0:
+                gap_length += self.codes[1]
+                cropping_codes = cropping_codes[2:]
+                index_shift = 2
+            result_parts.append([0, gap_length])
+        else:
+            is_streak, start_index, position = self.query_isbn(new_start_isbn)
+            if not is_streak:
+                result_parts.append([0])
+            cropping_codes = self.codes[start_index:].copy()
+            cropping_codes[0] -= position
+            index_shift = start_index
+
+        # Handle end
+        if new_end_isbn > self.bounds.end:
+            gap_length = new_end_isbn - self.bounds.end
+            if self._ends_with_gap():
+                cropping_codes[-1] += gap_length
+                result_parts.append(cropping_codes)
+            else:
+                result_parts.append(cropping_codes)
+                result_parts.append([gap_length])
+        else:
+            is_streak, end_index, position = self.query_isbn(new_end_isbn)
+            relative_end_index = end_index - index_shift + 1
+            cropping_codes = cropping_codes[:relative_end_index]
+
+            # Check if start and end are in the same segment
+            if new_total_length < self.codes[end_index]:
+                result_parts.append([new_total_length])
+            else:
+                cropping_codes[-1] = position + 1
+                result_parts.append(cropping_codes)
+
+        reframed_codes = np.concatenate(result_parts)
+
+        return self.__class__(reframed_codes, offset=new_start_isbn)
+
     def unpack_codes(self) -> UnpackedCodes:
         """Unpacks codes into boolean values.
 
@@ -217,45 +318,6 @@ class CodeDataset:
         tiles = np.zeros(len(self.codes), dtype=bool)
         tiles[::2] = True
         return np.repeat(tiles, self.codes)
-
-    def crop(self, start: ISBN12, end: ISBN12) -> Self:
-        """Crops the dataset to the input start and end ISBNs.
-
-        Arguments:
-            start: An ISBN to crop the dataset from.
-            end: An ISBN to crop the dataset until.
-
-        Returns:
-            A new cropped dataset.
-        """
-        if start > end:
-            raise ValueError("start is ahead of end")
-
-        try:
-            is_start_streak, start_idx, _ = self.query_isbn(start)
-        except ValueError:
-            start = self.bounds[0]
-            is_start_streak = self.codes[0] != 0
-            start_idx = 0
-        try:
-            _, end_idx, end_position = self.query_isbn(end)
-        except ValueError:
-            end = self.bounds[1]
-            end_idx = len(self.codes) - 1
-            end_position = self.codes[end_idx] - 1
-
-        if start_idx == end_idx:
-            segment_length = end - start + 1
-            cropped = np.array([segment_length], self.codes.dtype)
-        else:
-            cropped = self.codes[start_idx : end_idx + 1].copy()
-            cropped[0] = self._isbn_cumsums[start_idx] - start
-            cropped[-1] = end_position + 1
-
-        if not is_start_streak:
-            cropped = np.concatenate([[0], cropped])
-
-        return self.__class__(cropped, offset=start)
 
     def invert(self) -> Self:
         """Inverts the dataset by making streak segments gap."""
@@ -276,7 +338,7 @@ class CodeDataset:
         Raises:
             `ValueError`: If the ISBN is outside of the dataset bounds.
         """
-        if not (self.bounds[0] <= isbn <= self.bounds[1]):
+        if not (self.bounds.start <= isbn <= self.bounds.end):
             raise ValueError(f"{isbn} is outside of bounds {self.bounds}")
 
         segment_index = int(np.searchsorted(self._isbn_cumsums, isbn, side="right"))
@@ -297,7 +359,7 @@ class CodeDataset:
             An array of boolean values.
         """
         isbns = np.asarray(isbns)
-        inside_mask = (self.bounds[0] <= isbns) & (isbns <= self.bounds[1])
+        inside_mask = (self.bounds.start <= isbns) & (isbns <= self.bounds.end)
 
         # Outside ISBNs are false positives here
         segment_indices = np.searchsorted(self._isbn_cumsums, isbns, side="right")
@@ -338,7 +400,7 @@ class CodeDataset:
         Returns:
             A binned array.
         """
-        num_bins = math.ceil((self.bounds[1] - self.bounds[0] + 1) / bin_size)
+        num_bins = math.ceil((self.bounds.end - self.bounds.start + 1) / bin_size)
         num_bins_per_chunk = math.ceil(num_bins / num_chunks)
         num_isbns_per_chunk = num_bins_per_chunk * bin_size
 
@@ -347,7 +409,9 @@ class CodeDataset:
         for chunk_idx in range(num_chunks):
             chunk_start_isbn = chunk_idx * num_isbns_per_chunk + self.offset
             chunk_end_isbn = chunk_start_isbn + num_isbns_per_chunk - 1
-            unpacked_codes = self.crop(chunk_start_isbn, chunk_end_isbn).unpack_codes()
+            unpacked_codes = self.reframe(
+                chunk_start_isbn, chunk_end_isbn
+            ).unpack_codes()
             unpacked_length = len(unpacked_codes)
             if unpacked_length != num_isbns_per_chunk:
                 unpacked_codes = np.pad(
@@ -364,9 +428,9 @@ class CodeDataset:
 
     def is_subset(self, other: Self) -> bool:
         """Determines if a dataset is a subset of another."""
-        if self.bounds[0] < other.bounds[0] or self.bounds[1] > other.bounds[1]:
+        if self.bounds.start < other.bounds[0] or self.bounds.end > other.bounds[1]:
             return False
-        return self == other.crop(*self.bounds)
+        return self == other.reframe(*self.bounds)
 
     def write_bencoded(
         self, file: str | Path | IO[bytes], prefix: str, normalize: bool = True
@@ -391,7 +455,7 @@ class CodeDataset:
 
         try:
             codes_to_write = self.codes.copy()
-            if normalize and len(self.codes) % 2 == 0:
+            if normalize and self._ends_with_gap():
                 codes_to_write = codes_to_write[:-1]
 
             # Convert the codes as little-endian 4-bytes unsigned integers to bytes
@@ -416,11 +480,25 @@ class CodeDataset:
     def __hash__(self) -> int:
         return hash((self.codes, self.offset))
 
-    def __getitem__(self, key: slice[ISBN12, ISBN12, None]) -> Self:
+    def __getitem__(self, key: slice[ISBN12 | None, ISBN12 | None, None]) -> Self:
+        """Reframes a dataset to a new bounds using slicing.
+
+        Arguments:
+            key: A slice object with optional start and stop ISBNs. See
+                :meth:`reframe` for more info.
+
+        Examples:
+            Reframe a dataset using start and stop ISBNs:
+
+              >>> dataset = CodeDataset([3, 2, 1], offset=978_000_000_000)
+              >>> dataset[978_000_000_001:978_000_000_004]
+              CodeDataset(array([2, 2], dtype=int32), bounds=(978000000001,
+              978000000004))
+        """
         if isinstance(key, slice):
             if key.step:
                 raise ValueError("slice step is not supported")
-            return self.crop(key.start, key.stop)
+            return self.reframe(key.start, key.stop)
         raise ValueError("Object supports only slicing")
 
     def __invert__(self) -> Self:
@@ -429,7 +507,7 @@ class CodeDataset:
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}({self.codes!r}, "
-            f"bounds=({self.bounds[0]}, {self.bounds[1]}))"
+            f"bounds=({self.bounds.start}, {self.bounds.end}))"
         )
 
 

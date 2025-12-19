@@ -7,3 +7,4 @@
 
 .. automodule:: allisbns.dataset
    :members:
+   :special-members: __getitem__

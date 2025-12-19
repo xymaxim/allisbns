@@ -6,7 +6,7 @@ import re
 
 from dataclasses import asdict, dataclass
 from re import Pattern
-from typing import TYPE_CHECKING, Final, Literal, Self, cast
+from typing import TYPE_CHECKING, Final, Literal, NamedTuple, Self, cast
 
 import numpy as np
 
@@ -52,6 +52,13 @@ TOTAL_ISBNS: Final = LAST_ISBN - FIRST_ISBN + 1
 
 #: The length of ISBN-12 numbers.
 ISBN12_LENGTH = 12
+
+
+class ISBNBounds(NamedTuple):
+    """Represents ISBN bounds."""
+
+    start: ISBN12
+    end: ISBN12
 
 
 class CanonicalISBN:
@@ -366,12 +373,12 @@ def validate_isbn(
     return True
 
 
-def get_prefix_bounds(prefix: str) -> tuple[ISBN12, ISBN12]:
-    """Gets the bounds for an ISBN prefix."""
+def get_prefix_bounds(prefix: str) -> ISBNBounds:
+    """Gets bounds for an ISBN prefix."""
     prefix = prefix.replace("-", "")
-    return (
-        int(prefix.ljust(ISBN12_LENGTH, "0")),
-        int(prefix.ljust(ISBN12_LENGTH, "9")),
+    return ISBNBounds(
+        start=int(prefix.ljust(ISBN12_LENGTH, "0")),
+        end=int(prefix.ljust(ISBN12_LENGTH, "9")),
     )
 
 
