@@ -84,12 +84,12 @@ Limit output
 
 By design, datasets are considered immutable after creation. Moreover, there is
 no way to limit the output of some methods. If you need, for example, to get all
-filled ISBNs with prefix '979', then you will need to crop a dataset before:
+filled ISBNs with prefix '979', then you will need to reframe a dataset before:
 
 .. code-block:: python
 
    from allisbns.isbn import get_prefix_bounds
-   md5.crop(*get_prefix_bounds("979")).get_filled_isbns()
+   md5.reframe(*get_prefix_bounds("979")).get_filled_isbns()
 
 If you need to modify codes for some reason, you can copy codes and create a new
 dataset after editing. For example, here is an equivalent of the

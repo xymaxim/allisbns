@@ -192,10 +192,10 @@ def test_reframe_when_from_streak(codes_from_streak, start, end, expected):
     initial = CodeDataset(codes_from_streak)
     initial_codes = initial.codes.copy()
 
-    cropped = initial.reframe(start, end)
+    reframed = initial.reframe(start, end)
 
-    assert expected_offset == cropped.offset
-    assert_array_equal(cropped.codes, expected_codes)
+    assert expected_offset == reframed.offset
+    assert_array_equal(reframed.codes, expected_codes)
     assert_array_equal(initial_codes, initial.codes)
 
 
@@ -212,10 +212,10 @@ def test_reframe_when_from_gap(codes_from_gap, start, end, expected):
     initial = CodeDataset(codes_from_gap)
     initial_codes = initial.codes.copy()
 
-    cropped = initial.reframe(start, end)
+    reframed = initial.reframe(start, end)
 
-    assert expected_offset == cropped.offset
-    assert_array_equal(cropped.codes, expected_codes)
+    assert expected_offset == reframed.offset
+    assert_array_equal(reframed.codes, expected_codes)
     assert_array_equal(initial_codes, initial.codes)
 
 

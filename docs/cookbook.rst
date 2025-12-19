@@ -8,8 +8,8 @@ Cookbook
 
 .. _cookbook-iterate-datasets:
 
-Iterate and crop datasets
-*************************
+Iterate and reframe datasets
+****************************
 
 Let's first load the bencoded data from the compressed file:
 
@@ -40,8 +40,8 @@ The iterable datasets can be narrowed only to the selected ones:
    ):
        ...
 
-Also, the iterable datasets can be lazy cropped to some new bounds. For example,
-let's iterate over the '978' region of all datasets:
+Also, the iterable datasets can be lazy reframed to some new bounds. For
+example, let's iterate over the '978' region of all datasets:
 
 .. code-block:: python
 
@@ -53,9 +53,9 @@ let's iterate over the '978' region of all datasets:
    # Create the iterator, fill all datasets to the end ISBN
    iterator = iterate_datasets(input_data, fill_to_isbn=end_isbn)
 
-   # Use the generator expression to lazy crop datasets
-   iterator_with_cropping = (x.crop(start_isbn, end_isbn) for x in iterator)
-   for cropped_dataset in iterator_with_cropping:
+   # Use the generator expression to lazy reframe datasets
+   iterator_with_framing = (x.reframe(start_isbn, end_isbn) for x in iterator)
+   for reframed_dataset in iterator_with_framing:
        ...
 
 Merge and save datasets
