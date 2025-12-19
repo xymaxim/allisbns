@@ -10,16 +10,16 @@ LATEST_DUMP_FILENAME = "aa_isbn13_codes_20251118T170842Z.benc.zst"
 
 
 def label_groups(bins: ArrayLike, bin_size: int, offset: int = FIRST_ISBN) -> NDArray:
-    """Assigns each bin a group number according to the group boundaries."""
+    """Assigns each bin a group number according to the group bounds."""
     output = np.zeros_like(bins, dtype=np.float32)
     last_isbn = offset + bin_size * len(bins)
 
-    group_boundaries = {}
+    group_bounds = {}
     for prefix in sorted(REGISTRATION_GROUPS.keys()):
-        group_boundaries[prefix] = get_prefix_bounds(prefix)
+        group_bounds[prefix] = get_prefix_bounds(prefix)
 
-    for index, prefix in enumerate(group_boundaries.keys(), 1):
-        start_isbn, end_isbn = group_boundaries[prefix]
+    for index, prefix in enumerate(group_bounds.keys(), 1):
+        start_isbn, end_isbn = group_bounds[prefix]
         if start_isbn <= last_isbn:
             left = (start_isbn - offset) // bin_size
             right = (end_isbn - offset) // bin_size

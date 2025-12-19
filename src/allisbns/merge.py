@@ -34,7 +34,7 @@ def merge(
 ) -> CodeDataset:
     """Merges datasets using a merge function.
 
-    The boundaries of all datasets should be the same.
+    The bounds of all datasets should be the same.
 
     Arguments:
         datasets: Datasets to merge.
@@ -54,7 +54,7 @@ def merge(
 
     for other in dataset_iterator:
         if other.bounds != initial.bounds:
-            raise ValueError("dataset boundaries must be the same")
+            raise ValueError("dataset bounds must be the same")
         try:
             cast("MergeInPlaceFunction", function)(
                 merged_unpacked, other.unpack_codes(), out=merged_unpacked
