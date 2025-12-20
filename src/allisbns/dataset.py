@@ -126,6 +126,8 @@ class CodeDataset:
         if fill_to_isbn:
             self._fill_to_isbn(fill_to_isbn)
 
+        self.codes.flags.writeable = False
+
         object.__setattr__(
             self, "_isbn_cumsums", int(self.offset) + np.cumsum(self.codes)
         )
