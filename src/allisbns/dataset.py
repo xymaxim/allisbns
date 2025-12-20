@@ -114,6 +114,9 @@ class CodeDataset:
     #: First and last ISBNs in the dataset.
     bounds: ISBNBounds = field(init=False)
 
+    #: Total number of ISBNs encoded in the dataset.
+    total_isbns: int = field(init=False)
+
     #: Cumulative sums of ISBNs derived from the codes.
     _isbn_cumsums: npt.NDArray = field(init=False)
 
@@ -129,6 +132,7 @@ class CodeDataset:
         object.__setattr__(
             self, "bounds", ISBNBounds(self.offset, int(self._isbn_cumsums[-1]) - 1)
         )
+        object.__setattr__(self, "total_isbns", self.bounds.end - self.bounds.start + 1)
 
     @classmethod
     def from_file(
@@ -400,7 +404,7 @@ class CodeDataset:
         Returns:
             A binned array.
         """
-        num_bins = math.ceil((self.bounds.end - self.bounds.start + 1) / bin_size)
+        num_bins = math.ceil(self.total_isbns / bin_size)
         num_bins_per_chunk = math.ceil(num_bins / num_chunks)
         num_isbns_per_chunk = num_bins_per_chunk * bin_size
 

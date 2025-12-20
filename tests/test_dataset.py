@@ -72,6 +72,10 @@ def test_bounds(data, offset, expected):
     assert expected == CodeDataset(data, offset).bounds
 
 
+def test_total_isbns():
+    assert CodeDataset([5, 3, 2, 1]).total_isbns == 11
+
+
 @pytest.mark.parametrize(
     "isbn, expected",
     [
