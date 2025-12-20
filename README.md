@@ -84,8 +84,8 @@ Create a dataset from the downloaded file with ISBN codes:
       shape=(14737375,), dtype=int32), bounds=(978000000000, 979999468900))
 ```
 
-Here the `md5` collection represents files available for downloading in Anna's
-Archive. All available collections are:
+The `md5` collection represents files available in Anna's Archive. All available
+collections are:
 
     'airitibooks', 'bloomsbury', 'cadal_ssno', 'cerlalc', 'chinese_architecture',
     'duxiu_ssid', 'edsebk', 'gbooks', 'goodreads', 'hathi', 'huawen_library', 'ia',
