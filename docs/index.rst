@@ -7,4 +7,8 @@
    api/index
    examples
    cookbook
+
+.. toctree::
+   :maxdepth: 1
+
    changelog
