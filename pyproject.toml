@@ -90,7 +90,7 @@ ignore = [
     "PT",
     "S101"
 ]
-"examples/*" = ["D", "INP"]
+"examples/*" = ["D", "INP", "T201"]
 "examples/*.ipynb" = ["T201"]
 
 [tool.ruff.lint.isort]
