@@ -93,7 +93,7 @@ To write it down in the original format with compression, we can use
    with open(output_path.with_suffix(".benc.zst"), "wb") as f:
        all_merged.write_bencoded(f, prefix="all")
 
-Store datasets in HD5F
+Store datasets in HDF5
 **********************
 
 The original files with ISBN codes have a quite simple structure. All codes are
