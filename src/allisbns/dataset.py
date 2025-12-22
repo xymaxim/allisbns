@@ -282,6 +282,7 @@ class CodeDataset:
                 cropping_codes = cropping_codes[2:]
                 index_shift = 2
             result_parts.append([0, gap_length])
+            start_index = -1
         else:
             is_streak, start_index, position = self.query_isbn(new_start_isbn)
             if not is_streak:
@@ -303,9 +304,7 @@ class CodeDataset:
             is_streak, end_index, position = self.query_isbn(new_end_isbn)
             relative_end_index = end_index - index_shift + 1
             cropping_codes = cropping_codes[:relative_end_index]
-
-            # Check if start and end are in the same segment
-            if new_total_length < self.codes[end_index]:
+            if start_index == end_index:
                 result_parts.append([new_total_length])
             else:
                 cropping_codes[-1] = position + 1
@@ -411,7 +410,6 @@ class CodeDataset:
         num_isbns_per_chunk = num_bins_per_chunk * bin_size
 
         all_bins = np.zeros(num_bins_per_chunk * num_chunks, dtype=np.int32)
-
         for chunk_idx in range(num_chunks):
             chunk_start_isbn = chunk_idx * num_isbns_per_chunk + self.offset
             chunk_end_isbn = chunk_start_isbn + num_isbns_per_chunk - 1
