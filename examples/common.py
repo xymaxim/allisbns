@@ -1,3 +1,7 @@
+"""Common functions and variables used in notebooks."""
+
+from pathlib import Path
+
 import numpy as np
 
 from numpy.typing import ArrayLike, NDArray
@@ -6,7 +10,9 @@ from allisbns.isbn import FIRST_ISBN, get_prefix_bounds
 from allisbns.ranges import REGISTRATION_GROUPS
 
 
-LATEST_DUMP_FILENAME = "aa_isbn13_codes_20251118T170842Z.benc.zst"
+CURRENT_DUMP_PATH = (
+    Path(__file__).parent / "data/aa_isbn13_codes_20251118T170842Z.benc.zst"
+)
 
 
 def label_groups(bins: ArrayLike, bin_size: int, offset: int = FIRST_ISBN) -> NDArray:
