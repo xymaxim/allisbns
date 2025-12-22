@@ -10,7 +10,7 @@ plot such data that represent the largest fully open list of all known ISBNs.
 *(This project is not affiliated with Anna's Archive.)*
 
 [Source](https://github.com/xymaxim/allisbns)
-[Documentation](https://allisbns.readthedocs.io/en/stable/)
+[Documentation](https://allisbns.readthedocs.io/en/latest/)
 [Changelog](https://allisbns.readthedocs.io/en/latest/changelog.html)
 
 ## Introduction
@@ -66,7 +66,7 @@ The package works with datasets provided as bencoded files named as
 directory within the
 [aa_derived_mirror_metadata](https://annas-archive.org/torrents/aa_derived_mirror_metadata)
 torrents. One file contains ISBN codes for all datasets (collections). See
-[here](https://allisbns.readthedocs.io/en/stable/overview.html#codes) for more
+[here](https://allisbns.readthedocs.io/en/latest/overview.html#codes) for more
 info about codes.
 
 ### Work with datasets
@@ -128,14 +128,14 @@ Crop the dataset to some ISBN region:
 ## Further reading
 
 After installing, check out the
-[documentation](https://allisbns.readthedocs.io/en/stable/). See
-[Overview](https://allisbns.readthedocs.io/en/stable/overview.html) for the
+[documentation](https://allisbns.readthedocs.io/en/latest/). See
+[Overview](https://allisbns.readthedocs.io/en/latest/overview.html) for the
 first guidance. The [API
-reference](https://allisbns.readthedocs.io/en/stable/api/index.html) describes
+reference](https://allisbns.readthedocs.io/en/latest/api/index.html) describes
 modules, classes, and functions. There are practical
-[examples](https://allisbns.readthedocs.io/en/stable/examples.html) that will
+[examples](https://allisbns.readthedocs.io/en/latest/examples.html) that will
 demonstrate the main
-usage. [Cookbook](https://allisbns.readthedocs.io/en/stable/cookbook.html) also
+usage. [Cookbook](https://allisbns.readthedocs.io/en/latest/cookbook.html) also
 contains useful examples. You want to contribute code?
 [Contributing](https://allisbns.readthedocs.io/en/latest/contributing.html)
 tells how to participate.
