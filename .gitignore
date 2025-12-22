@@ -1,6 +1,7 @@
 # Project files
 RangeMessage.xml
 examples/*.benc.zst
+examples/data/*
 
 # Emacs files
 *~
