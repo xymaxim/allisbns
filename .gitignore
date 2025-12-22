@@ -2,6 +2,7 @@
 RangeMessage.xml
 examples/*.benc.zst
 examples/data/*
+!/examples/data/.gitkeep
 
 # Emacs files
 *~
