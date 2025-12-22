@@ -58,8 +58,8 @@ example, let's iterate over the '978' region of all datasets:
    for reframed_dataset in reframing:
        ...
 
-Merge and save datasets
-***********************
+Merge all datasets
+******************
 
 Create the iterator as above and union all datasets together:
 
@@ -80,7 +80,7 @@ example, let's temporarily save it to a binary file in :mod:`NumPy format
 .. code-block:: python
 
    timestamp = str(input_path).split(".")[0].split("_")[-1]
-   output_path = f"ms_isbn13_codes_{timestamp}_all.npy"
+   output_path = f"xy_isbn13_codes_{timestamp}_all.npy"
 
    with open(output_path, "wb") as f:
        np.save(f, all_merged.codes, allow_pickle=False)
@@ -92,3 +92,100 @@ To write it down in the original format with compression, we can use
 
    with open(output_path.with_suffix(".benc.zst"), "wb") as f:
        all_merged.write_bencoded(f, prefix="all")
+
+Store datasets in HD5F
+**********************
+
+The original files with ISBN codes have a quite simple structure. All codes are
+packed into a single bencoded dictionary and shipped compressed with Zstd. That
+yields a compact distribution (~80MB) but forces full decompression (~700MB) to
+read any subset, which can hurt interactive use a bit. An alternative for
+working with datasets would be to store codes in a different container format
+optimized for homogeneous arrays and partial access without uncompressing the
+whole file, such as HDF5, NetCDF, or Zarr.
+
+Here we experiment with `HDF5 <https://www.hdfgroup.org/solutions/hdf5/>`__ to
+convert bencoded files and save grouped analysis results.
+
+Current way
+-----------
+
+The current reading of codes for a single collection from a bencoded file
+(without keeping uncompressed data in memory) can be written as follows:
+
+.. code-block:: python
+
+   import struct
+
+   import bencodepy
+   import zstandard
+
+   def read_dataset(path: str, name: str) -> tuple[int]:
+       with open(path, "rb") as f:
+           with zstandard.ZstdDecompressor().stream_reader(f) as s:
+               uncompressed_data = bencodepy.bread(s)
+       packed_binary_codes = uncompressed_data[name.encode()]
+       return struct.unpack(
+           f"{len(packed_binary_codes) // 4}I",
+           packed_binary_codes
+       )
+
+On a non-performant laptop, I got this, which can be noticeable in interactive
+sessions:
+
+.. code-block:: ipython
+
+   In [1]: %timeit read_dataset("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
+   2.38 s ± 21.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+Convert bencoded files
+----------------------
+
+Alternatively, we provide the ``convert-bencoded-to-h5.py`` script (`link
+<https://github.com/xymaxim/allisbns/tree/main/scripts/convert-bencoded-to-h5.py>`__)
+for converting the ``*.benc.zst`` files to HDF5.
+
+.. code-block:: shell-session
+
+   $ uv run python scripts/convert-bencoded-to-h5.py \
+       aa_isbn13_codes_20251118T170842Z.benc.zst
+   $ ls -sh
+   78M  aa_isbn13_codes_20251118T170842Z.benc.zst
+   82M  aa_isbn13_codes_20251118T170842Z.h5
+
+The conversion is pretty quick and produces comparable file sizes. For the
+compression, we use `Blosc <https://www.blosc.org/>`__ (non-standard, available
+via `hdf5plugin <https://github.com/silx-kit/hdf5plugin>`__) with the shuffle
+and Zstd filters activated:
+
+.. code-block:: python
+
+   hdf5plugin.Blosc(
+       cname="zstd",
+       clevel=5,
+       shuffle=hdf5plugin.Blosc.SHUFFLE
+   )
+
+After that, reading codes as NumPy arrays is simply as follows:
+
+.. code-block:: python
+
+   import h5py
+   import numpy as np
+   import numpy.typing as npt
+
+   def read_dataset(path: str, name: str) -> npt.NDArray[np.int32]:
+       with h5py.File(path, "r") as f:
+           return f[name][:]
+
+.. code-block:: ipython
+
+   In [1]: %timeit read_dataset("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
+   104 ms ± 1.39 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+
+Basically, this setup preserves compact storage while enabling fast partial reads.
+
+Groups and attributes
+---------------------
+
+TODO
