@@ -13,7 +13,7 @@
 * [Plot all groups](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-groups.ipynb) — plotting all ISBN groups
 * [Plot all ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-isbns.ipynb) — plotting all merged datasets
 * [Compare dumps](https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb) — comparing two ISBN code dump files
-* [Plot cover image](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb>) — how is the cover image plotted
+* [Plot cover image](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb) — how is the cover image plotted
 * [Find unique ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/find-unique-isbns.ipynb) — finding ISBNs unique to the dataset
 * [Calculate percentage](https://github.com/xymaxim/allisbns/blob/main/examples/calculate-percentage.py) — script to calculate dataset's percentage
 
