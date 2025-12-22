@@ -21,8 +21,14 @@
 
 1. Download `aa_isbn13_codes_*.benc.zst` from the
    [torrent](https://allisbns.readthedocs.io/en/stable/#download-data) to
-   `examples`
-2. Set `LATEST_DUMP_FILENAME` in `examples/common.py` to the downloaded file's
-   filename
+   `examples/data/`
+2. Update `CURRENT_DUMP_PATH` in `examples/common.py`
 3. Install extra dependencies: `$ uv sync --extra examples`
-3. Run Jupyter Notebook in `examples`: `$ uv run jupyter notebook`
+4. Some examples require codes to be stored in HDF5
+   files ([why?](https://allisbns.readthedocs.io/en/stable/cookbook.html#store-datasets-in-hdf5)):
+
+       $ cd examples/data/
+       $ uv run python ../../scripts/convert-bencoded-to-h5.py \
+           aa_isbn13_codes...
+
+5. Run Jupyter Notebook in `examples`: `$ uv run jupyter notebook`
