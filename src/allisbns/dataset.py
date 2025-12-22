@@ -416,13 +416,14 @@ class CodeDataset:
             unpacked_codes = self.reframe(
                 chunk_start_isbn, chunk_end_isbn
             ).unpack_codes()
-            unpacked_length = len(unpacked_codes)
-            if unpacked_length != num_isbns_per_chunk:
-                unpacked_codes = np.pad(
-                    unpacked_codes,
-                    (0, num_isbns_per_chunk - unpacked_length),
-                    constant_values=0,
-                )
+            if chunk_idx == num_chunks - 1:
+                unpacked_length = len(unpacked_codes)
+                if unpacked_length != num_isbns_per_chunk:
+                    unpacked_codes = np.pad(
+                        unpacked_codes,
+                        (0, num_isbns_per_chunk - unpacked_length),
+                        constant_values=0,
+                    )
             chunk_shift = chunk_idx * num_bins_per_chunk
             all_bins[chunk_shift : chunk_shift + num_bins_per_chunk] = np.sum(
                 unpacked_codes.reshape((num_bins_per_chunk, bin_size)), axis=1
