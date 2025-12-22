@@ -188,4 +188,8 @@ Basically, this setup preserves compact storage while enabling fast partial read
 Groups and attributes
 ---------------------
 
-TODO
+The structured nature of HDF5 can be useful to store datasets and the
+corresponding metadata in a single file. For example, see the `Compare dumps
+<https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb>`__
+example where we compare 'md5' datasets from two latest dumps to find additions
+and deletions and save results in an HDF5 file using groups.
