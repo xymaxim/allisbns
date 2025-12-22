@@ -23,12 +23,16 @@ dependencies = [
 
 [project.optional-dependencies]
 docs = [
+    "ipython>=9.8.0",
     "sphinx>=9.0.4",
     "sphinx-mdinclude>=0.6.2",
 ]
 examples = [
     "allisbns[plotting]",
+    "h5py>=3.15.1",
+    "hdf5plugin>=6.0.0",
     "jupyter>=1.1.1",
+    "polars>=1.36.1",
     "tqdm>=4.67.1",
 ]
 plotting = [
