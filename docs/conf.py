@@ -22,6 +22,7 @@ html_theme_options = {
 }
 
 extensions = [
+    "IPython.sphinxext.ipython_console_highlighting",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
