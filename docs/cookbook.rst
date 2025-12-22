@@ -120,11 +120,11 @@ The current reading of codes for a single collection from a bencoded file
    import bencodepy
    import zstandard
 
-   def read_dataset(path: str, name: str) -> tuple[int]:
+   def read_codes(path: str, collection: str) -> tuple[int]:
        with open(path, "rb") as f:
            with zstandard.ZstdDecompressor().stream_reader(f) as s:
                uncompressed_data = bencodepy.bread(s)
-       packed_binary_codes = uncompressed_data[name.encode()]
+       packed_binary_codes = uncompressed_data[collection.encode()]
        return struct.unpack(
            f"{len(packed_binary_codes) // 4}I",
            packed_binary_codes
@@ -135,7 +135,7 @@ sessions:
 
 .. code-block:: ipython
 
-   In [1]: %timeit read_dataset("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
+   In [1]: %timeit read_codes("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
    2.38 s ± 21.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 
 Convert bencoded files
@@ -174,13 +174,13 @@ After that, reading codes as NumPy arrays is simply as follows:
    import numpy as np
    import numpy.typing as npt
 
-   def read_dataset(path: str, name: str) -> npt.NDArray[np.int32]:
+   def read_codes(path: str, collection: str) -> npt.NDArray[np.int32]:
        with h5py.File(path, "r") as f:
-           return f[name][:]
+           return f[collection][:]
 
 .. code-block:: ipython
 
-   In [1]: %timeit read_dataset("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
+   In [1]: %timeit read_codes("aa_isbn13_codes_20251118T170842Z.benc.zst", "md5")
    104 ms ± 1.39 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 
 Basically, this setup preserves compact storage while enabling fast partial reads.
