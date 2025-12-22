@@ -3,7 +3,11 @@
 Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) with
 the `MAJOR.MINOR.PATCH` scheme.
 
-## v0.1.3 - 2025.12.20
+## v0.1.4 - 2025-12-22
+
+- Fix incorrect framing due to wrong same segment check
+
+## v0.1.3 - 2025-12-20
 
 - Add the `total_isbns` field to `CodeDataset`
 - Make the `CodeDataset.codes` array read-only
