@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""
-This script calculates the percentage of the COLLECTION's ISBNs in all known
-ISBNs. All ISBNs are derived by merging all code collections available in
-CODES_FILE.
+"""Calculates the percentage of ISBNs in Anna's Archive.
+
+This script calculates the percentage of the target collection's ISBNs in all
+known ISBNs. All ISBNs are derived by merging all collections available in the
+input bencoded file with codes.
 
 The output is the numbers of all and the collection's ISBNs and the percentage.
 
 The script is another implementation of this one:
 https://software.annas-archive.li/AnnaArchivist/annas-archive/-/blob/a3b9d1be4070f493cd0b40932ff3fee22d08bb36/isbn_images/calculate_percentage_md5.py
 
-Usage: python calculate-percentage.py CODES_FILE COLLECTION
+Usage: python calculate-percentage.py codes-file collection
 """
 
 import sys
@@ -21,7 +22,7 @@ from allisbns.merge import union
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print(f"Usage: python {sys.argv[0]} CODES_FILE COLLECTION")
+        print(f"Usage: python {sys.argv[0]} codes-file collection")
         sys.exit(1)
 
     input_path = sys.argv[1]
