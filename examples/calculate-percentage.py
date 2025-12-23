@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Calculates the percentage of ISBNs in Anna's Archive.
 
 This script calculates the percentage of the target collection's ISBNs in all
