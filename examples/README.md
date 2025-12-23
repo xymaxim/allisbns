@@ -4,18 +4,28 @@
 
 ### Intro
 
-- [Getting started](https://github.com/xymaxim/allisbns/blob/main/examples/getting-started.ipynb) — introduction to the package
-- [Plot binned images](https://github.com/xymaxim/allisbns/blob/main/examples/plot-binned-images.ipynb) — how to plot binned images
-- [Merge datasets](https://github.com/xymaxim/allisbns/blob/main/examples/merge-datasets.ipynb) — how to merge datasets
+- [Getting started](https://github.com/xymaxim/allisbns/blob/main/examples/getting-started.ipynb)
+  — introduction to the package
+- [Plot binned images](https://github.com/xymaxim/allisbns/blob/main/examples/plot-binned-images.ipynb)
+  — how to plot binned images
+- [Merge datasets](https://github.com/xymaxim/allisbns/blob/main/examples/merge-datasets.ipynb)
+  — how to merge datasets
 
 ### Next step
 
-* [Plot all groups](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-groups.ipynb) — plotting all ISBN groups
-* [Plot all ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-isbns.ipynb) — plotting all merged datasets
-* [Compare dumps](https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb) — comparing two ISBN code dump files
-* [Plot cover image](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb) — how is the cover image plotted
-* [Find unique ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/find-unique-isbns.ipynb) — finding ISBNs unique to the dataset
-* [Calculate percentage](https://github.com/xymaxim/allisbns/blob/main/examples/calculate-percentage.py) — script to calculate dataset's percentage
+* [Plot all groups](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-groups.ipynb)
+  — plotting all ISBN groups
+* [Plot all ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/plot-all-isbns.ipynb)
+  — plotting all merged datasets
+* [Compare dumps](https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb)
+  — comparing two ISBN code dump files
+* [Plot cover image](https://github.com/xymaxim/allisbns/blob/main/examples/plot-cover-image.ipynb)
+  — how is the cover image plotted
+* [Find unique ISBNs](https://github.com/xymaxim/allisbns/blob/main/examples/find-unique-isbns.ipynb)
+  — finding ISBNs unique to the dataset
+* Calculate percentage ([Python](https://github.com/xymaxim/allisbns/blob/main/examples/calculate-percentage.py),
+  [Julia](https://gist.github.com/xymaxim/b2af6c8d8540c1f9d79ff288f42c2968#file-calculate-percentage-jl))
+  — scripts to calculate the percentage of ISBNs
 
 ## How to run notebooks?
 
