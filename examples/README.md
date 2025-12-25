@@ -35,7 +35,7 @@
 2. Update `CURRENT_DUMP_PATH` in `examples/common.py`
 3. Install extra dependencies: `$ uv sync --extra examples`
 4. Some examples require codes to be stored in HDF5
-   files ([why?](https://allisbns.readthedocs.io/en/stable/cookbook.html#store-datasets-in-hdf5)):
+   files ([why?](https://allisbns.readthedocs.io/en/latest/cookbook.html#store-datasets-in-hdf5)):
 
        $ cd examples/data/
        $ uv run python ../../scripts/convert-bencoded-to-h5.py \
