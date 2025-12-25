@@ -133,7 +133,7 @@ After installing, check out the
 first guidance. The [API
 reference](https://allisbns.readthedocs.io/en/latest/api/index.html) describes
 modules, classes, and functions. There are practical
-[examples](https://allisbns.readthedocs.io/en/latest/examples.html) that will
+[examples](https://github.com/xymaxim/allisbns/tree/main/examples#examples) that will
 demonstrate the main
 usage. [Cookbook](https://allisbns.readthedocs.io/en/latest/cookbook.html) also
 contains useful examples. You want to contribute code?
