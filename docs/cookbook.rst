@@ -105,7 +105,8 @@ optimized for homogeneous arrays and partial access without uncompressing the
 whole file, such as HDF5, NetCDF, or Zarr.
 
 Here we experiment with `HDF5 <https://www.hdfgroup.org/solutions/hdf5/>`__ to
-convert bencoded files and save grouped analysis results.
+convert bencoded files and save grouped analysis results. Additionally,
+experimental support is added to work with HDF5 files.
 
 Current way
 -----------
@@ -193,3 +194,39 @@ corresponding metadata in a single file. For example, see the `Compare dumps
 <https://github.com/xymaxim/allisbns/blob/main/examples/compare-dumps.ipynb>`__
 example where we compare 'md5' datasets from two latest dumps to find additions
 and deletions and save results in an HDF5 file using groups.
+
+HDF5 support
+------------
+
+See the experimental ``hdf5`` `branch
+<https://github.com/xymaxim/allisbns/tree/hdf5>`__ with the `module
+<https://github.com/xymaxim/allisbns/blob/hdf5/src/allisbns/hdf5.py>`__ added to
+read and iterate datasets from HDF5 files. See docstrings in the module for
+documentation.
+
+To install ``allisbns`` with the HDF5 support, run the following command:
+
+.. code-block:: shell-session
+
+   uv add git+https://github.com/xymaxim/allisbns@hdf5[h5]
+
+Read a dataset from a converted source file:
+
+.. code-block:: python
+
+   from allisbns.hdf5 import from_h5
+
+   from_h5("aa_isbn13_codes_20251222T170326Z.h5", "md5")
+
+
+Iterate over all datasets available in a source file:
+
+.. code-block:: python
+
+   import h5py
+
+   from allisbns.hdf5 import iterate_datasets
+
+   with h5py.File("aa_isbn13_codes_20251222T170326Z.h5") as f:
+       for dataset in iterate_datasets(f):
+           ...
