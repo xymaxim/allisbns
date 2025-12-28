@@ -90,3 +90,12 @@ class UndefinedISBNRangeError(InvalidISBNError):
 
 class NotISBN12Error(AllISBNsError, ValueError):
     """Raised when a value is not an ISBN-12 number."""
+
+
+class CollectionNotPresentError(ValueError, AllISBNsError):
+    """Raised when a collection is not present in a source with collections."""
+
+    def __init__(self, collection: str, collections: list[str]):
+        """Creates an exception for a ``collection`` not present in ``collections``."""
+        super().__init__(f"'{collection}' not present. ")
+        self.add_note(f"\nAvailable collections: {collections}")
