@@ -39,6 +39,10 @@ examples = [
     { name = "polars" },
     { name = "tqdm" },
 ]
+h5 = [
+    { name = "h5py" },
+    { name = "hdf5plugin" },
+]
 plotting = [
     { name = "matplotlib" },
 ]
@@ -56,7 +60,9 @@ requires-dist = [
     { name = "allisbns", extras = ["plotting"], marker = "extra == 'examples'" },
     { name = "bencode-py", specifier = ">=4.0.0" },
     { name = "h5py", marker = "extra == 'examples'", specifier = ">=3.15.1" },
+    { name = "h5py", marker = "extra == 'h5'", specifier = ">=3.15.1" },
     { name = "hdf5plugin", marker = "extra == 'examples'", specifier = ">=6.0.0" },
+    { name = "hdf5plugin", marker = "extra == 'h5'", specifier = ">=6.0.0" },
     { name = "ipython", marker = "extra == 'docs'", specifier = ">=9.8.0" },
     { name = "jupyter", marker = "extra == 'examples'", specifier = ">=1.1.1" },
     { name = "matplotlib", marker = "extra == 'plotting'", specifier = ">=3.10.7" },
@@ -67,7 +73,7 @@ requires-dist = [
     { name = "tqdm", marker = "extra == 'examples'", specifier = ">=4.67.1" },
     { name = "zstandard", specifier = ">=0.25.0" },
 ]
-provides-extras = ["docs", "examples", "plotting"]
+provides-extras = ["docs", "examples", "plotting", "h5"]
 
 [package.metadata.requires-dev]
 dev = [
