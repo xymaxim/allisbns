@@ -10,9 +10,12 @@ from allisbns.isbn import FIRST_ISBN, get_prefix_bounds
 from allisbns.ranges import REGISTRATION_GROUPS
 
 
-CURRENT_DUMP_PATH = (
-    Path(__file__).parent / "data/aa_isbn13_codes_20251118T170842Z.benc.zst"
-)
+CURRENT_DUMP_FILENAME = "aa_isbn13_codes_20251222T170326Z.benc.zst"
+
+
+def get_data_directory() -> Path:
+    """Returns the input data directory."""
+    return Path(__file__).parent / "data"
 
 
 def label_groups(bins: ArrayLike, bin_size: int, offset: int = FIRST_ISBN) -> NDArray:
