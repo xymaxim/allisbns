@@ -20,10 +20,11 @@ examples/data/%.benc.zst:
 examples/data/%.h5: examples/data/%.benc.zst
 	uv run python scripts/convert-bencoded-to-h5.py $< $@
 
-.PHONY: examples/%.ipynb
-examples/%.ipynb:
+FORCE:
+
+examples/%.ipynb: FORCE
 	uv run jupyter nbconvert --to notebook --execute --inplace $@
 
-run-all-notebooks: $(NOTEBOOKS)
+rerun-notebooks: $(NOTEBOOKS)
 
 plot-cover-images: examples/plot-cover-image.ipynb
