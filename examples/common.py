@@ -10,7 +10,7 @@ from allisbns.isbn import FIRST_ISBN, get_prefix_bounds
 from allisbns.ranges import REGISTRATION_GROUPS
 
 
-CURRENT_DUMP_FILENAME = "aa_isbn13_codes_20251222T170326Z.benc.zst"
+CURRENT_DUMP_FILENAME = "aa_isbn13_codes_20260205T182232Z.benc.zst"
 
 
 def get_data_directory() -> Path:
