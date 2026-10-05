@@ -3,6 +3,11 @@
 Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) with
 the `MAJOR.MINOR.PATCH` scheme.
 
+## v0.1.5 - 2026-10-05
+
+- Update ISBN registration group ranges
+- Rerun notebooks with the new dataset (20260205T182232Z)
+
 ## v0.1.4 - 2025-12-22
 
 - Fix incorrect framing due to wrong same segment check
