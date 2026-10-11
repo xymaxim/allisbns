@@ -3,6 +3,12 @@
 Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) with
 the `MAJOR.MINOR.PATCH` scheme.
 
+## Unreleased
+
+- Use [`prettyisbns`](https://github.com/xymaxim/prettyisbns) to work with ISBNs
+- Remove the `allisbns.isbn` and `allisbns.ranges` modules
+- Reduce the `allisbns.errors` module to the `AllISBNsError` base exception
+
 ## v0.1.5 - 2026-10-05
 
 - Update ISBN registration group ranges

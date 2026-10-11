@@ -11,9 +11,9 @@ import numpy as np
 import numpy.typing as npt
 
 from matplotlib.axes import Axes
+from prettyisbns.isbn import FIRST_ISBN, ISBN12, LAST_ISBN
 
 from allisbns.dataset import BinnedArray
-from allisbns.isbn import FIRST_ISBN, ISBN12, LAST_ISBN
 from allisbns.rearrange import rearrange_to_blocks, rearrange_to_rows
 
 

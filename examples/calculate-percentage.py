@@ -15,8 +15,9 @@ Usage: python calculate-percentage.py codes-file collection
 
 import sys
 
+from prettyisbns.isbn import LAST_ISBN
+
 from allisbns.dataset import CodeDataset, iterate_datasets, load_bencoded, unpack_data
-from allisbns.isbn import LAST_ISBN
 from allisbns.merge import union
 
 

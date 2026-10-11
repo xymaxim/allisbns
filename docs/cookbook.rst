@@ -26,7 +26,7 @@ Then create an iterator over all datasets and iterate:
 .. code-block:: python
 
    from allisbns.dataset import iterate_datasets, CodeDataset
-   from allisbns.isbn import LAST_ISBN
+   from prettyisbns.isbn import LAST_ISBN
 
    for dataset in iterate_datasets(input_data):
        ...
@@ -45,7 +45,7 @@ example, let's iterate over the '978' region of all datasets:
 
 .. code-block:: python
 
-   from allisbns.isbn import get_prefix_bounds
+   from prettyisbns.isbn import get_prefix_bounds
 
    # Get the corresponding bounds
    start_isbn, end_isbn = *get_prefix_bounds("978")
@@ -65,7 +65,7 @@ Create the iterator as above and union all datasets together:
 
 .. code-block:: python
 
-   from allisbns.isbn import LAST_ISBN
+   from prettyisbns.isbn import LAST_ISBN
    from allisbns.merge import union
 
    # The bounds must be the same

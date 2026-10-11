@@ -8,8 +8,6 @@ API
 
     allisbns.dataset
     allisbns.errors
-    allisbns.isbn
     allisbns.merge
     allisbns.plotting
-    allisbns.ranges
     allisbns.rearrange

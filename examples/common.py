@@ -5,9 +5,8 @@ from pathlib import Path
 import numpy as np
 
 from numpy.typing import ArrayLike, NDArray
-
-from allisbns.isbn import FIRST_ISBN, get_prefix_bounds
-from allisbns.ranges import REGISTRATION_GROUPS
+from prettyisbns.isbn import FIRST_ISBN, get_prefix_bounds
+from prettyisbns.ranges import REGISTRATION_GROUPS
 
 
 CURRENT_DUMP_FILENAME = "aa_isbn13_codes_20260205T182232Z.benc.zst"

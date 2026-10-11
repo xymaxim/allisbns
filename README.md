@@ -118,7 +118,7 @@ Get all filled ISBNs:
 Crop the dataset to some ISBN region:
 
 ```python
-    >>> from allisbns.isbn import get_prefix_bounds
+    >>> from prettyisbns.isbn import get_prefix_bounds
     >>> start_isbn, end_isbn = get_prefix_bounds("978")
     >>> md5.reframe(start_isbn, end_isbn)
     CodeDataset(array([6, 1, 9, ..., 1, 2, 2],

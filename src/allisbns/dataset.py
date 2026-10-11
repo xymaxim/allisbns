@@ -13,9 +13,8 @@ import numpy as np
 import numpy.typing as npt
 
 from bencodepy import bread  # type: ignore[import-untyped]
+from prettyisbns.isbn import FIRST_ISBN, ISBN12, ISBNBounds
 from zstandard import ZstdCompressor, ZstdDecompressor
-
-from allisbns.isbn import FIRST_ISBN, ISBN12, ISBNBounds
 
 
 if TYPE_CHECKING:

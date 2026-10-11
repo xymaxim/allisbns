@@ -107,7 +107,7 @@ segment, we can use the ``fill_to_isbn`` argument:
 
 .. code-block:: python
 
-    >>> from allisbns.isbn import LAST_ISBN
+    >>> from prettyisbns.isbn import LAST_ISBN
     >>>
     >>> CodeDataset.from_file(
     ...     source="aa_isbn13_codes_20251118T170842Z.benc.zst",
@@ -130,7 +130,7 @@ reframe a dataset in prior with :meth:`~allisbns.dataset.CodeDataset.reframe`:
 
 .. code-block:: python
 
-   from allisbns.isbn import get_prefix_bounds
+   from prettyisbns.isbn import get_prefix_bounds
    md5.reframe(*get_prefix_bounds("979")).get_filled_isbns()
 
 Immutable datasets
@@ -150,104 +150,44 @@ editing. For example, here is an equivalent of the
 Working with ISBNs
 ******************
 
-The package provides classes and functions to work with ISBNs, both numeric and
-string types.
-
 To simplify things, the methods of :class:`~allisbns.dataset.CodeDataset` only
-accepts ISBNs represented as *ISBN-12* values (without the check digit) of
-integer types. We omit the range validation there, but you can use
-:func:`~allisbns.isbn.ensure_isbn12` to make sure that your values are valid if
-needed.
+accept ISBNs represented as :type:`~prettyisbns.isbn.ISBN12` values (ISBN-13
+without the check digit) of integer types.
 
-To work with strings, we have two classes, :class:`~allisbns.isbn.CanonicalISBN`
-and :class:`~allisbns.isbn.MaskedISBN`.
-
-Normalize ISBNs
-===============
-
-Let's say we have some ISBN that comes from anywhere.
+Everything else related to ISBNs (normalizing, fixing, and formatting ISBNs) is
+provided by the :external+prettyisbns:doc:`index` package. Use
+:func:`~prettyisbns.normalize` to turn an ISBN string into an ISBN-12 value:
 
 .. code-block:: python
 
-   isbn = "978-23-6590-117-X"
+   from prettyisbns import normalize
+   from prettyisbns.errors import NotISBNError
 
-It might be delimited by hyphens (correctly or not), contain the incorrect check
-digit, or even not be an ISBN at all.
+   try:
+       # Normalize the ISBN string and convert it to an ISBN-12 value
+       isbn12 = normalize("978-2-36590-117-X").to_isbn12()
+   except NotISBNError:
+       # Handle a value that is not an ISBN
+       ...
 
-First, let's try to normalize and complete it with the correct check digit if
-needed with :func:`~allisbns.isbn.normalize_isbn`.
+   # Can be safely used for querying the dataset
+   md5.query_isbn(isbn12)
 
-.. code-block:: python
-
-   # Normalize the ISBN, keep the 'X' check digit
-   >>> canonical = normalize_isbn(isbn)
-   CanonicalISBN(978236590117X)
-
-   # Complete the ISBN with the check digit
-   >>> canonical.complete()
-   CanonicalISBN(9782365901178)
-
-Now we are sure that our ISBN value is valid. The output is
-:class:`~allisbns.isbn.CanonicalISBN`. We can then, for example, convert it to
-the ISBN-12 integer number:
+Because :type:`~prettyisbns.isbn.ISBN12` is just an :class:`int`, plain integers
+can be passed directly, as long as they fall between
+:data:`~prettyisbns.isbn.FIRST_ISBN` and :data:`~prettyisbns.isbn.LAST_ISBN`:
 
 .. code-block:: python
 
-   >>> isbn12 = canonical.to_isbn12()
-   >>> isbn12
-   978236590117
+   from prettyisbns.isbn import FIRST_ISBN, LAST_ISBN
 
-   >>> # Can be safely used for querying the dataset
-   >>> md5.query(isbn12)
+   isbn12 = 978_2_36590_117
+   if FIRST_ISBN <= isbn12 <= LAST_ISBN:
+       md5.query_isbn(isbn12)
+   else:
+       ...
 
-Format ISBNs
-============
-
-The canonical ISBNs can be formatted with hyphens to separate their elements:
-
-.. code-block:: python
-
-   >>> canonical.hyphen()
-   '978-2-36590-117-8'
-
-We have the :class:`~allisbns.isbn.MaskedISBN` class underneath for that: it
-validates ISBN ranges and splits ISBNs into distinct elements. In most cases you do
-not need to initialize it directly, since creating it from canonical ISBNs is
-more practical:
-
-.. code-block:: python
-
-   >>> masked = MaskedISBN.from_canonical(canonical)
-   >>> masked
-   MaskedISBN(
-       bookland='978',
-       group='2',
-       registrant='36590',
-       publication='117',
-       check_digit='8',
-   )
-
-
-The masked ISBNs enable slicing to output formatted ISBNs in a granular manner:
-
-.. code-block:: python
-
-   >>> # Get the full publisher prefix
-   >>> masked[:3]
-   '978-2-36590'
-
-
-ISBN ranges
-===========
-
-As you may notice, the formatted ISBN differs from our initial input string
-('978-23-6590-117-X') that is incorrectly formatted. Masking ISBNs is possible
-with knowing about the valid ISBN registration groups and registrant ranges. The
-valid ranges are available from the `International ISBN Agency
-<https://www.isbn-international.org/>`__ website. We store such values in the
-auto-generated :mod:`allisbns.ranges` module. Given that, the ranges may change
-and expire, which breaks validation: we will still consider previously undefined
-for use ranges invalid.
+See ``prettyisbns``'s :external+prettyisbns:doc:`usage` for the full usage guide.
 
 Plotting binned images
 **********************
