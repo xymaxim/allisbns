@@ -3,7 +3,7 @@
 Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) with
 the `MAJOR.MINOR.PATCH` scheme.
 
-## Unreleased
+## v0.2.0 - 2026-10-11
 
 - Use [`prettyisbns`](https://github.com/xymaxim/prettyisbns) to work with ISBNs
 - Remove the `allisbns.isbn` and `allisbns.ranges` modules
